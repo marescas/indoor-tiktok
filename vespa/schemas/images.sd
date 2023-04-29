@@ -1,0 +1,22 @@
+schema images {
+    document images {
+        field id type string {
+            indexing: attribute | summary
+        }
+        field filename type string {
+            indexing: summary
+        }
+        field embedding type tensor<float>(x[1280]) {
+            indexing: index | attribute | summary
+            attribute {
+                distance-metric: innerproduct
+            }
+            index {
+                hnsw {
+                    max-links-per-node: 16
+                    neighbors-to-explore-at-insert: 200
+                }
+            }
+        }
+    }
+}
