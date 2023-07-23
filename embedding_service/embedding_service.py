@@ -1,8 +1,8 @@
 import base64
 
 import grpc
-import embedding_pb2
-import embedding_pb2_grpc
+import protos.embedding_pb2 as embedding_pb2
+from protos import embedding_pb2_grpc
 from concurrent import futures
 import time
 import tensorflow as tf

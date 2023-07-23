@@ -19,4 +19,13 @@ schema images {
             }
         }
     }
+    rank-profile semantic-similarity inherits default {
+        inputs {
+            query(query_embedding) tensor<float>(x[1280])         }
+        first-phase {
+            expression {
+                closeness(embedding)
+            }
+        }
+    }
 }
