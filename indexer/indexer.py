@@ -32,14 +32,18 @@ if __name__ == '__main__':
     i = 1
     files = list(glob.glob("Images/*/*"))
     random.shuffle(files)
+    # Only indexing 3K images because my MAC is suffering
     for file in tqdm.tqdm(files[:3000]):
         stub = embedding_pb2_grpc.ImageProcedureStub(channel)
         with Image.open(file) as img:
+            # Resize image to the expected size
             frame = img.resize(size=(224, 224))
             data = base64.b64encode(np.array(frame))
             image_req = embedding_pb2.B64Image(b64image=data, width=224, height=224)
             try:
+                # sending to the embedding service
                 response = stub.ImageToEmbedding(image_req)
+                # index the embedding inside Vespa
                 vespa_doc = create_vespa_doc(idx=i, filename=file, embedding=list(response.embedding))
                 vespa_endpoint.feed_data_point(schema="images", data_id=i, fields=vespa_doc["fields"])
             except Exception as e:

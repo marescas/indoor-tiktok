@@ -8,6 +8,7 @@ if __name__ == '__main__':
     app_package.schema.add_fields(
         Field(name="id", type="string", indexing=["attribute", "summary"]),
         Field(name="filename", type="string", indexing=["summary"]),
+        # innerproduct works well if we have the embeddings normalized for example with L2 :)
         Field(name="embedding", type="tensor<float>(x[1280])", indexing=["index", "attribute", "summary"],
               ann=HNSW(
                   distance_metric="innerproduct",

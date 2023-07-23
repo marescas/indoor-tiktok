@@ -11,6 +11,8 @@ import numpy as np
 
 class ImageProcedureServicer(embedding_pb2_grpc.ImageProcedureServicer):
     def __init__(self):
+        # Is this the best model? I am sure that not. The model is not trained for doing embedding search so the quality should be bad.
+        # But I need something that can run in my machine. I am thinking on adapting the model using triplet loss to obtain better representations
         self.model = tf.keras.applications.MobileNetV2(weights="imagenet", include_top=False, pooling="avg")
 
     def ImageToEmbedding(self, request, context):
